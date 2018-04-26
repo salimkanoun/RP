@@ -76,7 +76,15 @@ public class Volume_Modele {
 		else activiteInjectee = (etalonMean*masseInjecte)-(mesureLavage);
 		return activiteInjectee;
 	}
-	
+	/**
+	 * C'est un rendement d'amnistration
+	 * SK PAS UTILE A SUPRIMMER PROBABLEMENT
+	 * @param masseEtalon
+	 * @param masseInjectee
+	 * @param mesureEtalon
+	 * @param mesureLavageGR
+	 * @return
+	 */
 	protected static double calculRendementMarquageGR(double masseEtalon, double masseInjectee, double mesureEtalon, double mesureLavageGR) {
 		double massetotale=masseEtalon+masseInjectee;
 		double numerateur =mesureEtalon*massetotale/masseEtalon;
