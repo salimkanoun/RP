@@ -1,4 +1,4 @@
-package bloodVolume;
+package org.petctviewer.radiopharmacy.bloodVolume;
 import java.util.List;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;

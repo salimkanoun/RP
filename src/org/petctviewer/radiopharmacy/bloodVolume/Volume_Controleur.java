@@ -1,4 +1,4 @@
-package bloodVolume;
+package org.petctviewer.radiopharmacy.bloodVolume;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;

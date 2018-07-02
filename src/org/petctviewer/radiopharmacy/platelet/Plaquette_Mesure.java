@@ -1,4 +1,4 @@
-package platelet;
+package org.petctviewer.radiopharmacy.platelet;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;

@@ -1,4 +1,4 @@
-package bloodVolume;
+package org.petctviewer.radiopharmacy.bloodVolume;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Image;

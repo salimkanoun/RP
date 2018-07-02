@@ -1,4 +1,4 @@
-package bloodVolume;
+package org.petctviewer.radiopharmacy.bloodVolume;
 
 public class Volume_Generic_Value {
 	private double cpmMl;

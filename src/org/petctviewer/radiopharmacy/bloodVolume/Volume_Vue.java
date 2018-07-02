@@ -1,4 +1,4 @@
-package bloodVolume;
+package org.petctviewer.radiopharmacy.bloodVolume;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -33,9 +33,9 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import com.michaelbaranov.microba.calendar.DatePicker;
+import org.petctviewer.radiopharmacy.platelet.Plaquette_Modele;
 
-import platelet.Plaquette_Modele;
+import com.michaelbaranov.microba.calendar.DatePicker;
 
 import javax.swing.SwingConstants;
 import java.awt.FlowLayout;
@@ -56,11 +56,11 @@ public class Volume_Vue extends JFrame {
 	private JSpinner spinner_weight, spinner_height, spinner_bckg_count;
 	private JList<String> Sex ;
 	private JLabel lbl_SC, lblAge, lblInjectedVolumeValue, lbl_Ideal_Weight, lbl_Weight_Ratio, lblTheoricalRedCell, lblTheoricalPlasmaVolume,
-	lblTheoricalBloodVolume, lbl_masseEtalon, lbl_Corrected_Hematocrite,lbl_Hematocrite,lbl_Somatic_Hematocrite,
+	lblTheoricalBloodVolume, lbl_masseEtalon, lbl_Corrected_Hematocrite, lbl_Hematocrite, lbl_Somatic_Hematocrite,
 	lbl_Etalon_Mean, lbl_Etalon_SD, lbl_Etalon_CV,
 	lbl_LavageGR_Mean, lbl_LavageGR_SD, lbl_LavageGR_CV,
 	lbl_Lavage_SerringueMean, lbl_Lavage_Serringue_SD, lbl_Lavage_Serringue_CV,
-	lbl_RedCell15_Mean,lbl_RedCell15_SD,lbl_RedCell15_CV ;
+	lbl_RedCell15_Mean,lbl_RedCell15_SD,lbl_RedCell15_CV;
 	private DatePicker dateOfBirth, ExamDate, dateCr51, dateNaCl;
 	private double injectedVolume, masseEtalon, ageCalc;
 	private DecimalFormat df = new DecimalFormat("0.00"); 
