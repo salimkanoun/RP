@@ -1,3 +1,4 @@
+package bloodVolume;
 
 public class Volume_Generic_Value {
 	private double cpmMl;
@@ -43,4 +44,5 @@ public class Volume_Generic_Value {
 	public double getTime() {
 		return timeGR;
 	}
+	
 }

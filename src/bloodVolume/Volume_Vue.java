@@ -1,3 +1,4 @@
+package bloodVolume;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -33,6 +34,9 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import com.michaelbaranov.microba.calendar.DatePicker;
+
+import platelet.Plaquette_Modele;
+
 import javax.swing.SwingConstants;
 import java.awt.FlowLayout;
 import javax.swing.JComboBox;
@@ -49,7 +53,7 @@ public class Volume_Vue extends JFrame {
 	private JPanel contentPane;
 	private JTextField textField_LastName, textField_FirstName, textField_ID, textFieldRefferingPhysican, 
 	textField_weightEmpty, textField_WeightFull;
-	private JSpinner spinner_weight, spinner_height;
+	private JSpinner spinner_weight, spinner_height, spinner_bckg_count;
 	private JList<String> Sex ;
 	private JLabel lbl_SC, lblAge, lblInjectedVolumeValue, lbl_Ideal_Weight, lbl_Weight_Ratio, lblTheoricalRedCell, lblTheoricalPlasmaVolume,
 	lblTheoricalBloodVolume, lbl_masseEtalon, lbl_Corrected_Hematocrite,lbl_Hematocrite,lbl_Somatic_Hematocrite,
@@ -595,6 +599,16 @@ public class Volume_Vue extends JFrame {
 		lbl_RedCell15_CV = new JLabel("CV : N/A");
 		panel_RedCell15_SD.add(lbl_RedCell15_CV);
 		
+		JPanel panel_13 = new JPanel();
+		panel_Mesure_Center.add(panel_13);
+		
+		JLabel lblBackgroundSubstration = new JLabel("Background Count Substration :");
+		panel_13.add(lblBackgroundSubstration);
+		
+		spinner_bckg_count = new JSpinner();
+		spinner_bckg_count.setModel(new SpinnerNumberModel(0, 0, 100000, 1));
+		panel_13.add(spinner_bckg_count);
+		
 		JPanel Bottum_Panel = new JPanel();
 		Bottum_Panel.setBorder(new LineBorder(new Color(0, 0, 0)));
 		contentPane.add(Bottum_Panel, BorderLayout.SOUTH);
@@ -924,6 +938,14 @@ public class Volume_Vue extends JFrame {
 	
 	public void setCr51Activity(Double cr51Activity) {
 		textField_Cr_Activity_Mbq.setText(String.valueOf(cr51Activity));
+	}
+	
+	public int getBackgroundCount() {
+		return (int) spinner_bckg_count.getValue();
+	}
+	
+	public void setBackgroundCount(int bckg) {
+		spinner_bckg_count.setValue(bckg);
 	}
 
 }

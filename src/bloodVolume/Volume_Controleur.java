@@ -1,3 +1,4 @@
+package bloodVolume;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -43,7 +44,7 @@ public class Volume_Controleur implements ActionListener, PlugIn  {
 	private double[] resultsEtalon, resultsLavageGR, resultsLavageSerringue, resultsGR;
 	private boolean fullEtalonDilution;
 	private double volumeDilutionEtalon, lavageGRDilutionVolume, lavageSerringueDilutionVolume, volumeDilutionGR;
-	private double bloodDensity;
+	private double bloodDensity, etalonDensity;
 	private File lastDirectory;
 	private SimpleDateFormat  simpleFormat = new SimpleDateFormat("yyyyMMdd");
 
@@ -73,12 +74,16 @@ public class Volume_Controleur implements ActionListener, PlugIn  {
 			valueEtalon.setModal(true);
 			valueEtalon.setLocationRelativeTo(gui);
 			fullEtalonDilution=valueEtalon.isFullEtalonDilution();
-			if (!valeursEtalon.isEmpty()) valueEtalon.setValeurs(valeursEtalon);
+			if (!valeursEtalon.isEmpty()) {
+				valueEtalon.setValeurs(valeursEtalon);
+				valueEtalon.setDensity(etalonDensity);
+			}
 			valueEtalon.setVisible(true);
 			// Si validation on recupere les resultats
 			if (valueEtalon.getOk()) {
 				valeursEtalon=valueEtalon.getValeurs();
 				volumeDilutionEtalon=valueEtalon.getDilutionVolume();
+				etalonDensity=valueEtalon.getDensity();
 				updateEtalonLabels();
 			}
 			
@@ -147,8 +152,9 @@ public class Volume_Controleur implements ActionListener, PlugIn  {
 		if (event.getActionCommand()=="Calculate") {
 			  try {
 				  //SAUVEGARDER LES VALEUR DE DILUTION DE CHAQUE DANS LE REGISTERY OU DANS UNE VARIABLE
-					double activiteInjecte=Volume_Modele.activiteInjecteeGR(resultsEtalon[0], gui.getMasseInjectee(), gui.getMasseEtalon(), resultsLavageSerringue[0], fullEtalonDilution);
-					double volumeGlobulaireMesure=(activiteInjecte*meanHematocrite)/(resultsGR[0]*100);
+				  	int backgroundCount=gui.getBackgroundCount();
+					double activiteInjecte=Volume_Modele.activiteInjecteeGR( (resultsEtalon[0]-backgroundCount) , gui.getMasseInjectee(), gui.getMasseEtalon(), (resultsLavageSerringue[0]-backgroundCount), fullEtalonDilution);
+					double volumeGlobulaireMesure=(activiteInjecte*meanHematocrite)/( (resultsGR[0]-backgroundCount)*100 );
 					double volumeSgTotalMesure=((volumeGlobulaireMesure*100)/(meanHematocrite*0.91));
 					double volumePlasmatiqueMesure=volumeSgTotalMesure-volumeGlobulaireMesure;
 					double rendementMarquage=Volume_Modele.calculRendementMarquageGR(gui.getMasseEtalon(), gui.getMasseInjectee(), resultsEtalon[0], resultsLavageGR[0]);
@@ -331,6 +337,11 @@ public class Volume_Controleur implements ActionListener, PlugIn  {
 					}
 					fullEtalonDilution=((boolean)fullJson.get("IsFullEtalonDilution"));
 					volumeDilutionEtalon =((double) fullJson.get("EtalonDilutionVolume"));
+					if(fullJson.containsKey("EtalonDensity")) {
+						etalonDensity=((double) fullJson.get("EtalonDensity"));
+					}
+					else etalonDensity=1;
+					
 					updateEtalonLabels();
 					
 					// Ajout lavage GR
@@ -370,6 +381,14 @@ public class Volume_Controleur implements ActionListener, PlugIn  {
 						unitGR=(String) resultatMesureGR.get("Unit");
 					}
 					
+					//Ajout Backgroung
+					if (fullJson.containsKey("backgroundCount")) {
+						gui.setBackgroundCount( Integer.parseInt(fullJson.get("backgroundCount").toString()) );
+					}
+					else {
+						gui.setBackgroundCount(0);
+					}
+					
 					calculateAndupdateGRLabels();
 					
 					
@@ -399,7 +418,7 @@ public class Volume_Controleur implements ActionListener, PlugIn  {
 	}
 	
 	private void updateEtalonLabels() {
-		resultsEtalon=Volume_Modele.calculateMeanSdCv(valeursEtalon, volumeDilutionEtalon );
+		resultsEtalon=Volume_Modele.calculateMeanSdCv(valeursEtalon, volumeDilutionEtalon, etalonDensity );
 		gui.getLabelEtalonMean().setText("Mean : "+df.format(resultsEtalon[0]));
 		gui.getLabelEtalonSD().setText("SD : "+ df.format(resultsEtalon[1]));
 		gui.getLabelEtalonCV().setText("CV (%) : "+df.format(resultsEtalon[2]*100));	
@@ -410,10 +429,14 @@ public class Volume_Controleur implements ActionListener, PlugIn  {
 		else {
 			gui.getLabelEtalonCV().setOpaque(false); 
 		}
-	}
+		
+		
+			
+			
+		}
 	
 	private void updateLavageGrLabels() {
-		resultsLavageGR=Volume_Modele.calculateMeanSdCv(valeursLavageGR, lavageGRDilutionVolume);
+		resultsLavageGR=Volume_Modele.calculateMeanSdCv(valeursLavageGR, lavageGRDilutionVolume, 1);
 		gui.getLabelLavageGRMean().setText("Mean : "+df.format(resultsLavageGR[0]));
 		gui.getLabelLavageGRSD().setText("SD : "+ df.format(resultsLavageGR[1]));
 		gui.getLabelLavageGRCV().setText("CV (%) : "+df.format(resultsLavageGR[2]*100));
@@ -427,7 +450,7 @@ public class Volume_Controleur implements ActionListener, PlugIn  {
 	}
 	
 	private void updateLavageSerringueLabels() {
-		resultsLavageSerringue=Volume_Modele.calculateMeanSdCv(valeursLavageSerringue, lavageSerringueDilutionVolume);
+		resultsLavageSerringue=Volume_Modele.calculateMeanSdCv(valeursLavageSerringue, lavageSerringueDilutionVolume, 1);
 		gui.getLabelLavageSerringueMean().setText("Mean : "+df.format(resultsLavageSerringue[0]));
 		gui.getLabelLavageSerringueSD().setText("SD : "+ df.format(resultsLavageSerringue[1]));
 		gui.getLabelLavageSerringueCV().setText("CV (%) : "+df.format(resultsLavageSerringue[2]*100));
@@ -462,6 +485,7 @@ public class Volume_Controleur implements ActionListener, PlugIn  {
 			//On ajoute la valeur a la liste adHoc pour le temps de mesure
 			if (valeursGR.get(i).getuse()) mesures.get(Time).add(cpmMl*volumeDilutionGR);
 		}
+		
 		//On cree une nouvelle liste avec les moyenne de coups de chaque temps
 		List<Double> moyenneMesureGRparTemps=new ArrayList<Double>();
 		Double[] tempsMesure=new Double[mesures.size()];
@@ -584,7 +608,8 @@ public class Volume_Controleur implements ActionListener, PlugIn  {
 		save.put("GRValueUnit", unitGR);
 		save.put("GRDilution", volumeDilutionGR);
 		save.put("BloodDensity", bloodDensity);
-		
+		save.put("EtalonDensity", etalonDensity);
+		save.put("backgroundCount", gui.getBackgroundCount());
 		
 		return save.toJSONString();
 	}

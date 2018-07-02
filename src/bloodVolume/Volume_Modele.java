@@ -1,3 +1,4 @@
+package bloodVolume;
 import java.util.List;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
@@ -46,10 +47,10 @@ public class Volume_Modele {
 	 * @param valeursList
 	 * @return
 	 */
-	protected static double[] calculateMeanSdCv(List<Volume_Generic_Value> valeursList, double dilutionVolume) {
+	protected static double[] calculateMeanSdCv(List<Volume_Generic_Value> valeursList, double dilutionVolume, double density) {
 		DescriptiveStatistics stat=new DescriptiveStatistics();
 		for (int i=0 ; i<valeursList.size(); i++) {
-		if (valeursList.get(i).getuse()) stat.addValue(valeursList.get(i).getcpmMl()*dilutionVolume);
+		if (valeursList.get(i).getuse()) stat.addValue((valeursList.get(i).getcpmMl()*dilutionVolume)/density);
 		}
 		double results[]= new double[3];
 		results[0] = stat.getMean();

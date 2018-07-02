@@ -1,3 +1,4 @@
+package bloodVolume;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -36,6 +37,9 @@ public class Volume_Insert_Value_Generic extends JDialog {
 	private boolean ok;
 	private JSpinner spinner_dilutionVolume;
 	private JCheckBox chckbxFullEtalonDilution= new JCheckBox("Full Etalon Dilution");
+	private JSpinner spinner_density = new JSpinner();
+	private JLabel lblUnit = new JLabel("Result can be expressed CPM/ml or CPM/g as density is assumed =1  ");
+	private JLabel lblDensity = new JLabel("Density");
 	private String title="value type";
 	private List<Volume_Generic_Value> valeurs;
 	DecimalFormat df ;
@@ -64,7 +68,12 @@ public class Volume_Insert_Value_Generic extends JDialog {
 	
 	public Volume_Insert_Value_Generic(String title) {
 		this.title=title;
-		if (!title.equals("Etalon")) chckbxFullEtalonDilution.setVisible(false);
+		if (!title.equals("Etalon")) {
+			chckbxFullEtalonDilution.setVisible(false);
+			spinner_density.setVisible(false);
+			lblDensity.setVisible(false);
+			lblUnit.setVisible(true);
+		}
 		makeGui();
 	}
 
@@ -117,9 +126,9 @@ public class Volume_Insert_Value_Generic extends JDialog {
 				panel_1.setLayout(new BorderLayout(0, 0));
 				{
 					{
-						JLabel lblNewLabel = new JLabel("Result can be expressed CPM/ml or CPM/g as density is assumed =1  ");
-						lblNewLabel.setFont(new Font("Dialog", Font.PLAIN, 10));
-						panel_1.add(lblNewLabel, BorderLayout.NORTH);
+						lblUnit.setFont(new Font("Dialog", Font.PLAIN, 10));
+						lblUnit.setVisible(false);
+						panel_1.add(lblUnit, BorderLayout.NORTH);
 					}
 					{
 						JPanel panel_2 = new JPanel();
@@ -173,6 +182,11 @@ public class Volume_Insert_Value_Generic extends JDialog {
 											panel_3.add(spinner_dilutionVolume);
 											spinner_dilutionVolume.setModel(new SpinnerNumberModel(1.0, 1.0, 999.0, 1.0));
 											spinner_dilutionVolume.setValue(jPrefer.getDouble(title, 1));
+											
+											
+											panel_3.add(lblDensity);
+											spinner_density.setModel(new SpinnerNumberModel(1.0, 1.0, 1.2, 0.01));
+											panel_3.add(spinner_density);
 											
 										}
 										okButton.setActionCommand("OK");
@@ -253,6 +267,14 @@ public class Volume_Insert_Value_Generic extends JDialog {
 	
 	public void setIsFullEtalonDilution(boolean fullDilution) {
 		chckbxFullEtalonDilution.setSelected(fullDilution);
+	}
+	
+	public double getDensity() {
+		return (double) spinner_density.getValue();
+	}
+	
+	public void setDensity(double density) {
+		spinner_density.setValue(density);
 	}
 
 }

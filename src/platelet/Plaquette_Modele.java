@@ -1,3 +1,4 @@
+package platelet;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -59,7 +60,7 @@ public class Plaquette_Modele {
 		return vst;
 	}
 	
-	protected static double calculer_ScDubois(int taille, int poids) {
+	public static double calculer_ScDubois(int taille, int poids) {
 		double surfaceCorporelleDubois=0.007184*Math.pow(taille,0.725)*Math.pow(poids, 0.425);
 		return surfaceCorporelleDubois;
 	}
