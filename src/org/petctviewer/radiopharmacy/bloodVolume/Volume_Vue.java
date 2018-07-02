@@ -602,7 +602,7 @@ public class Volume_Vue extends JFrame {
 		JPanel panel_13 = new JPanel();
 		panel_Mesure_Center.add(panel_13);
 		
-		JLabel lblBackgroundSubstration = new JLabel("Background Count Substration :");
+		JLabel lblBackgroundSubstration = new JLabel("Background Count Substraction :");
 		panel_13.add(lblBackgroundSubstration);
 		
 		spinner_bckg_count = new JSpinner();
