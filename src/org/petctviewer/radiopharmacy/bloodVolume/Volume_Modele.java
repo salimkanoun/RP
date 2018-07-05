@@ -47,10 +47,16 @@ public class Volume_Modele {
 	 * @param valeursList
 	 * @return
 	 */
-	protected static double[] calculateMeanSdCv(List<Volume_Generic_Value> valeursList, double dilutionVolume, double density) {
+	protected static double[] calculateMeanSdCv(List<Volume_Generic_Value> valeursList, double dilutionVolume, double density, int bckg) {
 		DescriptiveStatistics stat=new DescriptiveStatistics();
 		for (int i=0 ; i<valeursList.size(); i++) {
-		if (valeursList.get(i).getuse()) stat.addValue((valeursList.get(i).getcpmMl()*dilutionVolume)/density);
+		if (valeursList.get(i).getuse()) {
+			//Substract background from raw counts
+			double counts=valeursList.get(i).getcpmMl()-bckg;
+			if (counts<0) counts=0;
+			//Divide by density in case of non diluted etalon (in this case have a density over 1)
+			stat.addValue( ( (counts)*dilutionVolume) / density );
+			}
 		}
 		double results[]= new double[3];
 		results[0] = stat.getMean();

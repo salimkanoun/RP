@@ -606,6 +606,7 @@ public class Volume_Vue extends JFrame {
 		panel_13.add(lblBackgroundSubstration);
 		
 		spinner_bckg_count = new JSpinner();
+		spinner_bckg_count.addChangeListener(controleur);
 		spinner_bckg_count.setModel(new SpinnerNumberModel(0, 0, 100000, 1));
 		panel_13.add(spinner_bckg_count);
 		

@@ -19,6 +19,8 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
@@ -29,7 +31,7 @@ import org.json.simple.parser.ParseException;
 
 import ij.plugin.PlugIn;
 
-public class Volume_Controleur implements ActionListener, PlugIn  {
+public class Volume_Controleur implements ActionListener, PlugIn, ChangeListener  {
 	
 	private Volume_Vue gui=new Volume_Vue(this);
 	private Double meanHematocrite;
@@ -418,7 +420,7 @@ public class Volume_Controleur implements ActionListener, PlugIn  {
 	}
 	
 	private void updateEtalonLabels() {
-		resultsEtalon=Volume_Modele.calculateMeanSdCv(valeursEtalon, volumeDilutionEtalon, etalonDensity );
+		resultsEtalon=Volume_Modele.calculateMeanSdCv(valeursEtalon, volumeDilutionEtalon, etalonDensity, gui.getBackgroundCount() );
 		gui.getLabelEtalonMean().setText("Mean : "+df.format(resultsEtalon[0]));
 		gui.getLabelEtalonSD().setText("SD : "+ df.format(resultsEtalon[1]));
 		gui.getLabelEtalonCV().setText("CV (%) : "+df.format(resultsEtalon[2]*100));	
@@ -436,7 +438,7 @@ public class Volume_Controleur implements ActionListener, PlugIn  {
 		}
 	
 	private void updateLavageGrLabels() {
-		resultsLavageGR=Volume_Modele.calculateMeanSdCv(valeursLavageGR, lavageGRDilutionVolume, 1);
+		resultsLavageGR=Volume_Modele.calculateMeanSdCv(valeursLavageGR, lavageGRDilutionVolume, 1, gui.getBackgroundCount());
 		gui.getLabelLavageGRMean().setText("Mean : "+df.format(resultsLavageGR[0]));
 		gui.getLabelLavageGRSD().setText("SD : "+ df.format(resultsLavageGR[1]));
 		gui.getLabelLavageGRCV().setText("CV (%) : "+df.format(resultsLavageGR[2]*100));
@@ -450,7 +452,7 @@ public class Volume_Controleur implements ActionListener, PlugIn  {
 	}
 	
 	private void updateLavageSerringueLabels() {
-		resultsLavageSerringue=Volume_Modele.calculateMeanSdCv(valeursLavageSerringue, lavageSerringueDilutionVolume, 1);
+		resultsLavageSerringue=Volume_Modele.calculateMeanSdCv(valeursLavageSerringue, lavageSerringueDilutionVolume, 1, gui.getBackgroundCount());
 		gui.getLabelLavageSerringueMean().setText("Mean : "+df.format(resultsLavageSerringue[0]));
 		gui.getLabelLavageSerringueSD().setText("SD : "+ df.format(resultsLavageSerringue[1]));
 		gui.getLabelLavageSerringueCV().setText("CV (%) : "+df.format(resultsLavageSerringue[2]*100));
@@ -472,10 +474,10 @@ public class Volume_Controleur implements ActionListener, PlugIn  {
 			// On calcule le nombre de CPM par ml en tenant compte de l'unite
 			double cpmMl = 0;
 			if(unitGR.equals("CPM/ml")) {
-				cpmMl=valeursGR.get(i).getcpmMl();
+				cpmMl=valeursGR.get(i).getcpmMl() - gui.getBackgroundCount();
 			}
 			else if(unitGR.equals("CPM/mg")) {
-				cpmMl=valeursGR.get(i).getcpmMl()/bloodDensity;
+				cpmMl=(valeursGR.get(i).getcpmMl() - gui.getBackgroundCount() )/bloodDensity ;
 				
 			}
 			
@@ -612,6 +614,16 @@ public class Volume_Controleur implements ActionListener, PlugIn  {
 		save.put("backgroundCount", gui.getBackgroundCount());
 		
 		return save.toJSONString();
+	}
+	
+
+	@Override
+	public void stateChanged(ChangeEvent arg0) {
+		calculateAndupdateGRLabels();
+		updateLavageSerringueLabels();
+		updateLavageGrLabels();
+		updateEtalonLabels();
+		
 	}
 
 }
