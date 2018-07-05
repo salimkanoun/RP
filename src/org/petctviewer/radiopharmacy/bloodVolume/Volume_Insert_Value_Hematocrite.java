@@ -141,33 +141,6 @@ public class Volume_Insert_Value_Hematocrite extends JDialog {
 		setSize(this.getPreferredSize());
 	}
 	
-	/*private boolean calculateMeanHematocrite() {
-		double sumHematocrite=0;
-		boolean valueCorrect=true;
-		hematocriteValues=new ArrayList<Double>();
-		for (int i=0; i<table.getRowCount(); i++) {
-			double hematocrite=Double.parseDouble(table.getValueAt(i, 0).toString().replaceAll("%", ""));
-			if (hematocrite<1 || hematocrite>100) {
-				JOptionPane.showMessageDialog(this,
-					    "Hematocrite should be expressed in % (ex :55%)",
-					    "Error Value",
-					    JOptionPane.WARNING_MESSAGE);
-				valueCorrect=false;
-			}
-			else {
-				hematocriteValues.add(hematocrite);
-				sumHematocrite+=hematocrite;
-			}
-			
-		}
-		meanHematocrite=sumHematocrite/table.getRowCount();
-		return valueCorrect;
-	}*/
-	
-	//public double getMeanHematocrite() {
-	//	return this.meanHematocrite;
-	//}
-	
 	public List<Double> getHematocriteValues(){
 		return hematocriteValues;
 	}

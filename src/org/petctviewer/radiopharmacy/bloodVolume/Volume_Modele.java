@@ -117,18 +117,4 @@ public class Volume_Modele {
 	return scPedia;
 	}
 	
-	
-	/*protected double[] getFirstDelayMaxCounts(List<Mesure> mesureCollection, Date injectionTime) {
-	double minDelay=Double.POSITIVE_INFINITY;
-	double maxCounts=0;
-	for (int i=0; i<mesureCollection.size(); i++) {
-	double delay = (double) ((mesureCollection.get(i).getMesureTime().getTime()-injectionTime.getTime())/(1000*3600));
-	if (delay<minDelay) minDelay=delay;
-	if (mesureCollection.get(i).getCountdecayCorrected()>maxCounts) maxCounts=mesureCollection.get(i).getCountdecayCorrected();
-	}
-	double[] results=new double[2];
-	results[0]=minDelay;
-	results[1]=maxCounts;
-	return results;
-	}*/
 }
