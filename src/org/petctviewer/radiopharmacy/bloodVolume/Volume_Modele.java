@@ -83,6 +83,8 @@ public class Volume_Modele {
 		else activiteInjectee = (etalonMean*masseInjecte)-(mesureLavage);
 		return activiteInjectee;
 	}
+	
+	
 	/**
 	 * C'est un rendement d'amnistration
 	 * SK PAS UTILE A SUPRIMMER PROBABLEMENT
